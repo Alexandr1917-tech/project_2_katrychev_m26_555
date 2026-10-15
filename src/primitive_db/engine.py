@@ -5,13 +5,19 @@ from primitive_db.utils import load_metadata, save_metadata
 
 
 def welcome():
-    print("***")
-    print("<command> exit — выйти из программы")
+    print("***База данных***")
+    print()
+    print("Функции:")
+    print("<command> create_table <имя_таблицы> <столбец1:тип> <столбец2:тип> ... — создать таблицу")
+    print("<command> list_tables — показать список всех таблиц")
+    print("<command> drop_table <имя_таблицы> — удалить таблицу")
+    print("<command> exit — выход из программы")
     print("<command> help — справочная информация")
-    print("Введите команду: ")
+    print()
 
 
 def run():
+    welcome()
     while True:
         metadata = load_metadata("db_meta.json")
         user_input = input(">>>Введите команду: ")
@@ -45,3 +51,4 @@ def run():
             save_metadata("db_meta.json", metadata)           
         else:
             print(f"Функции {cmd} нет. Попробуйте снова.")
+
