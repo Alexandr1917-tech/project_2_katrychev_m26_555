@@ -17,3 +17,7 @@
 >>>Введите команду: drop_table users
 Таблица "users" успешно удалена.
 ```
+
+##
+Демонстрация
+[![asciicast](https://asciinema.org/a/oF0ELD2P9ZhXN7y3.svg)](https://asciinema.org/a/oF0ELD2P9ZhXN7y3)
