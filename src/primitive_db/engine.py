@@ -18,6 +18,12 @@ def welcome():
     print("<command> create_table <имя_таблицы> <столбец1:тип> <столбец2:тип> ... — создать таблицу")    # noqa: E501
     print("<command> list_tables — показать список всех таблиц")
     print("<command> drop_table <имя_таблицы> — удалить таблицу")
+    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) — создать запись") # noqa: E501
+    print("<command> select from <имя_таблицы> where <столбец> = <значение> — прочитать записи")    # noqa: E501
+    print("<command> select from <имя_таблицы> — прочитать все записи")
+    print("<command> update <имя_таблицы> set <столбец1> = <новое_значение1> where <столбец> = <значение> — обновить запись")    # noqa: E501
+    print("<command> delete from <имя_таблицы> where <столбец> = <значение> — удалить запись")    # noqa: E501
+    print("<command> info <имя_таблицы> — вывести информацию о таблице")
     print("<command> exit — выход из программы")
     print("<command> help — справочная информация")
     print()

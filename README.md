@@ -5,6 +5,13 @@
 - `list_tables` — список таблиц
 - `help` — справка
 - `exit` — выход
+- `insert into <имя_таблицы> values (<значение1>, <значение2>, ...)` — добавить запись
+- `select from <имя_таблицы>` — прочитать все записи
+- `select from <имя_таблицы> where <столбец> = <значение>` — прочитать записи по условию
+- `update <имя_таблицы> set <столбец1> = <новое_значение> where <столбец> = <значение>` — обновить записи
+- `delete from <имя_таблицы> where <столбец> = <значение>` — удалить записи
+- `info <имя_таблицы>` — вывести информацию о таблице
+
 
 Пример:
 
@@ -16,8 +23,27 @@
 - users
 >>>Введите команду: drop_table users
 Таблица "users" успешно удалена.
+>>>Введите команду: insert into users values ("Sergei", 28, true)
+Запись успешно добавлена в таблицу "users".
+>>>Введите команду: select from users
++----+--------+-----+-----------+
+| ID |  name  | age | is_active |
++----+--------+-----+-----------+
+| 1  | Sergei | 28  |   True    |
++----+--------+-----+-----------+
+>>>Введите команду: update users set age = 29 where name = "Sergei"
+Запись с ID=1 в таблице "users" успешно обновлена.
+>>>Введите команду: delete from users where ID = 1
+Запись с ID=1 успешно удалена из таблицы "users".
+>>>Введите команду: info users
+Таблица: users
+Столбцы: ID:int, name:str, age:int, is_active:bool
+Количество записей: 0
 ```
 
-##
-Демонстрация
+## Демонстрация
 [![asciicast](https://asciinema.org/a/oF0ELD2P9ZhXN7y3.svg)](https://asciinema.org/a/oF0ELD2P9ZhXN7y3)
+
+## Демонстрация CRUD-операций
+
+[![asciicast](https://asciinema.org/a/ANE9JwC01spWm4bS.svg)](https://asciinema.org/a/ANE9JwC01spWm4bS)
