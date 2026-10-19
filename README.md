@@ -1,3 +1,15 @@
+# primitive_db
+
+Консольная база данных с поддержкой CRUD-операций (create, read, update, delete), обработкой ошибок через декораторы и подтверждением опасных действий.
+
+## Установка и запуск
+```
+# Установка пакета
+uv tool install dist/*.whl --force
+
+# Запуск
+database
+```
 ## Управление таблицами
 
 - `create_table <имя> <столбец1:тип> ...` — создать таблицу
@@ -47,9 +59,8 @@
 ## Демонстрация CRUD-операций
 
 [![asciicast](https://asciinema.org/a/ANE9JwC01spWm4bS.svg)](https://asciinema.org/a/ANE9JwC01spWm4bS)
-
 ## Демонстрация декораторов
-[![asciicast](https://asciinema.org/a/5qhKZ9flRtEWmQ5A.svg)](https://asciinema.org/a/5qhKZ9flRtEWmQ5A)
+[![asciicast](https://asciinema.org/a/3cWHSIjHBC16IPdg.svg)](https://asciinema.org/a/3cWHSIjHBC16IPdg)
 
 ## Обработка ошибок и подтверждение действий
 
