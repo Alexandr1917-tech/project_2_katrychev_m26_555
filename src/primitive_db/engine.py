@@ -3,7 +3,8 @@ import shlex
 from prettytable import PrettyTable
 
 from primitive_db.core import create_table, delete, drop_table, insert, select, update
-from primitive_db.utils import (  # noqa: E501
+from primitive_db.decorators import create_cacher
+from primitive_db.utils import (
     load_metadata,
     load_table_data,
     save_metadata,
@@ -31,6 +32,7 @@ def welcome():
 
 def run():
     welcome()
+    cacher = create_cacher()
     while True:
         metadata = load_metadata("db_meta.json")
         user_input = input(">>>Введите команду: ")
@@ -60,7 +62,10 @@ def run():
             if len(args) < 2:
                 print("Некорректное значение. Попробуйте снова.")
                 continue
-            metadata = drop_table(metadata, args[1])
+            result = drop_table(metadata, args[1])
+            if result is None:
+                continue
+            metadata = result
             save_metadata("db_meta.json", metadata)  
 
         elif cmd == "info":
@@ -86,13 +91,16 @@ def run():
                 print(f'Ошибка: Таблица "{table_name}" не существует.')
                 continue
 
-            data = load_table_data(table_name)
+            where_clause = None
             if len(args) > 3 and args[3] == "where":
                 if len(args) < 7:
                     print("Некорректное значение. Попробуйте снова.")
                     continue
                 where_clause = parse_where(args[4:])
-                data = select(data, where_clause)
+                
+            cache_key = (table_name, tuple(sorted(where_clause.items())) if where_clause else (table_name, None)) # noqa: E501
+
+            data = cacher(cache_key, lambda: select(load_table_data(table_name), where_clause),) # noqa: E501
 
             columns = metadata[table_name]["columns"]
             col_names = [col.split(":")[0] for col in columns]
@@ -131,6 +139,8 @@ def run():
                 print("Некорректное значение. Попробуйте снова.")
                 continue
             data = insert(metadata, table_name, values)
+            if not data:
+                continue
             save_table_data(table_name, data)
             print(f'Запись успешно добавлена в таблицу "{table_name}".')
 
@@ -150,7 +160,10 @@ def run():
                 row["ID"] for row in data
                 if all(row[col] == val for col, val in where_clause.items())
             ]
-            data = delete(data, where_clause)
+            result = delete(data, where_clause)
+            if result is None:
+                continue
+            data = result
             save_table_data(table_name, data)
 
             if deleted_ids:

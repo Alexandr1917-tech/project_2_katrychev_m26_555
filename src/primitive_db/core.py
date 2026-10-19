@@ -1,8 +1,10 @@
 import os
 
+from primitive_db.decorators import confirm_action, handle_db_errors, log_time
 from primitive_db.utils import load_table_data
 
 
+@handle_db_errors
 def create_table(metadata, table_name, columns):
     
     if table_name in metadata:
@@ -20,6 +22,8 @@ def create_table(metadata, table_name, columns):
     metadata[table_name] = {"columns": full_columns}
     return metadata    
 
+@handle_db_errors
+@confirm_action("удаление таблицы")
 def drop_table(metadata, table_name):
     if table_name not in metadata:
         print(f'Ошибка: Таблица "{table_name}" не существует.')
@@ -28,8 +32,11 @@ def drop_table(metadata, table_name):
     data_file = f"data/{table_name}.json"
     if os.path.exists(data_file):
         os.remove(data_file)
+    print(f'Таблица "{table_name}" успешно удалена.')
     return metadata
 
+@handle_db_errors
+@log_time
 def insert(metadata, table_name, values):
     if table_name not in metadata:
         print(f'Ошибка: Таблица "{table_name}" не существует.')
@@ -64,6 +71,7 @@ def insert(metadata, table_name, values):
     data.append(new_row)
     return data   
 
+@log_time
 def select(table_data, where_clause=None):
     if where_clause is None:
         return table_data
@@ -74,6 +82,7 @@ def select(table_data, where_clause=None):
             result.append(row)
     return result  
 
+@handle_db_errors
 def update(table_data, set_clause, where_clause):
     for row in table_data:
         if all(row[col] == val for col, val in where_clause.items()):
@@ -81,6 +90,8 @@ def update(table_data, set_clause, where_clause):
                 row[col] = val
     return table_data
 
+@handle_db_errors
+@confirm_action("удаление записи")
 def delete(table_data, where_clause):
     result = []
     for row in table_data:
